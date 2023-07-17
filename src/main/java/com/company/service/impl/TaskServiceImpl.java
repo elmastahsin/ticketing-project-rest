@@ -12,6 +12,9 @@ import com.company.mapper.UserMapper;
 import com.company.repository.TaskRepository;
 import com.company.service.TaskService;
 import com.company.service.UserService;
+import org.keycloak.adapters.springsecurity.account.SimpleKeycloakAccount;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -41,7 +44,7 @@ public class TaskServiceImpl implements TaskService {
 
         Optional<Task> task = taskRepository.findById(id);
 
-        if(task.isPresent()){
+        if (task.isPresent()) {
             return taskMapper.convertToDto(task.get());
         }
         return null;
@@ -66,9 +69,9 @@ public class TaskServiceImpl implements TaskService {
     public void update(TaskDTO dto) {
 
         Optional<Task> task = taskRepository.findById(dto.getId());
-        Task convertedTask  = taskMapper.convertToEntity(dto);
+        Task convertedTask = taskMapper.convertToEntity(dto);
 
-        if(task.isPresent()){
+        if (task.isPresent()) {
             convertedTask.setTaskStatus(dto.getTaskStatus() == null ? task.get().getTaskStatus() : dto.getTaskStatus());
             convertedTask.setAssignedDate(task.get().getAssignedDate());
             taskRepository.save(convertedTask);
@@ -81,7 +84,7 @@ public class TaskServiceImpl implements TaskService {
 
         Optional<Task> foundTask = taskRepository.findById(id);
 
-        if(foundTask.isPresent()){
+        if (foundTask.isPresent()) {
             foundTask.get().setIsDeleted(true);
             taskRepository.save(foundTask.get());
         }
@@ -117,8 +120,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskDTO> listAllTasksByStatusIsNot(Status status) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SimpleKeycloakAccount details = (SimpleKeycloakAccount) authentication.getDetails();
+        String username = details.getKeycloakSecurityContext().getToken().getPreferredUsername();
 
-        UserDTO loggedInUser = userService.findByUserName("john@employee.com");
+        UserDTO loggedInUser = userService.findByUserName(username);
 
         List<Task> tasks = taskRepository.
                 findAllByTaskStatusIsNotAndAssignedEmployee(status, userMapper.convertToEntity(loggedInUser));
@@ -128,7 +134,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskDTO> listAllTasksByStatus(Status status) {
 
-        UserDTO loggedInUser = userService.findByUserName("john@employee.com");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        SimpleKeycloakAccount details = (SimpleKeycloakAccount) authentication.getDetails();
+        String username = details.getKeycloakSecurityContext().getToken().getPreferredUsername();
+
+        UserDTO loggedInUser = userService.findByUserName(username);
 
         List<Task> tasks = taskRepository.
                 findAllByTaskStatusAndAssignedEmployee(status, userMapper.convertToEntity(loggedInUser));
