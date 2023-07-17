@@ -64,10 +64,10 @@ public class TaskController {
     }
 
     //EmployeeArchiveTasks
-    @PutMapping("/employee/archive")
-    public ResponseEntity<ResponseWrapper> employeeArchiveTasks(@RequestBody TaskDTO taskDTO){
-        taskService.update(taskDTO);
-        return ResponseEntity.ok(new ResponseWrapper("task successfully updated", HttpStatus.CREATED));
+    @GetMapping("/employee/archive")
+    public ResponseEntity<ResponseWrapper> employeeArchiveTasks(){
+        List<TaskDTO> taskDTOList= taskService.listAllTasksByStatus(Status.COMPLETE);
+        return ResponseEntity.ok(new ResponseWrapper("task successfully retrieved",taskDTOList, HttpStatus.OK));
     }
 
 
