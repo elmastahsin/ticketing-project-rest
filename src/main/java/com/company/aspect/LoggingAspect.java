@@ -38,7 +38,15 @@ public class LoggingAspect {
         log.info("AfterReturning -> Method : {} ,User {},Result : {}"
                 , joinPoint.getSignature().toShortString()
                 , getUserName()
-                , results);
+                , results.toString());
+
+    }
+    @AfterThrowing(pointcut = "anyProjectAndTaskControllerPC()", throwing = "exception")
+    public void afterReturningProjectAndTaskControllerAdvice(JoinPoint joinPoint, Exception exception) {
+        log.info("AfterReturning -> Method : {} ,User {},Result : {}"
+                , joinPoint.getSignature().toShortString()
+                , getUserName()
+                , exception.getMessage());
 
     }
 }
