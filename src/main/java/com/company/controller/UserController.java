@@ -1,7 +1,9 @@
 package com.company.controller;
 
+import com.company.annotation.ExecutionTime;
 import com.company.dto.ResponseWrapper;
 import com.company.dto.UserDTO;
+import com.company.exception.TicketingProjectException;
 import com.company.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -25,6 +27,7 @@ public class UserController {
         this.userService = userService;
     }
 
+    @ExecutionTime
     @GetMapping
     @RolesAllowed({"Manager", "Admin"})
     @Operation(summary = "Get All Users")
@@ -32,7 +35,7 @@ public class UserController {
         List<UserDTO> users = userService.listAllUsers();
         return ResponseEntity.ok(new ResponseWrapper("users successfully retrieved", users, HttpStatus.OK));
     }
-
+    @ExecutionTime
     @GetMapping("/{username}")
     @RolesAllowed({"Admin"})
     @Operation(summary = "Get User By Username")
@@ -60,7 +63,7 @@ public class UserController {
     @DeleteMapping("/{username}")
     @RolesAllowed({"Admin"})
     @Operation(summary = "Delete User")
-    public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("username") String username) {
+    public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("username") String username) throws TicketingProjectException {
         userService.delete(username);
         return ResponseEntity
                 .ok(new ResponseWrapper("user successfully deleted", HttpStatus.OK));
