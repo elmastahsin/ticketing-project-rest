@@ -27,6 +27,7 @@ import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 @SpringBootTest
 @AutoConfigureMockMvc
 class ProjectControllerTest {
@@ -40,7 +41,7 @@ class ProjectControllerTest {
 
     @BeforeAll
     static void setUp() {
-        token = "Bearer " + "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpVmRPVXZvcVM2Q2ZKZUpCY2JXNElaNU1sbTJiLUI5RXhJakpsa21aSGZZIn0.eyJleHAiOjE2OTEwNjIyMTUsImlhdCI6MTY5MTA2MTkxNSwianRpIjoiM2E2ZThiZmMtYmI5ZS00NDlhLTk2NGYtNjlmYjk4ODBmOWU2IiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL2NvbXBhbnktZGV2IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjJhZWQ2YjgxLWU2MzAtNDdlOS1iNjQ3LTgwM2U5NDI0ZWM1YSIsInR5cCI6IkJlYXJlciIsImF6cCI6InRpY2tldGluZy1hcHAiLCJzZXNzaW9uX3N0YXRlIjoiOGY4ZGZiNWItYzVkZi00YzJkLWE2MzctMWI3NDA5Yzg4MjczIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwODEiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtY29tcGFueS1kZXYiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsidGlja2V0aW5nLWFwcCI6eyJyb2xlcyI6WyJFbXBsb3llZSJdfSwiYWNjb3VudCI6eyJyb2xlcyI6WyJtYW5hZ2UtYWNjb3VudCIsIm1hbmFnZS1hY2NvdW50LWxpbmtzIiwidmlldy1wcm9maWxlIl19fSwic2NvcGUiOiJvcGVuaWQgZW1haWwgcHJvZmlsZSIsInNpZCI6IjhmOGRmYjViLWM1ZGYtNGMyZC1hNjM3LTFiNzQwOWM4ODI3MyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJwcmVmZXJyZWRfdXNlcm5hbWUiOiJ0b20ifQ.YnMmT3iZG4Wjx_Ty1DZg9POrWMeghVuckMDpzBkEpZ-U4Yx4XDpTzigSngtmBM65Rt47RdUbo0sUJXZJkJoxCXPpdvMszh_FCIkj9kbMBI8hE5joCb_MBeFqMXu51r10aKrD-0UffsG1chLCc0wzGpZQsOi6eVL9M6TCL1ruQXeNbkWbLwQl9rzGhbRwfr6h31eQ_cDJSJYB1qov3oFPlF8wAgyT5bmDjPM9PirCcLYjVghaTOZNpfNrRCzlX1HMG5Z2RzCmzDwOTE6K0Smhx64NL6nAlH3YsIidC3sSkpf3_mebHb779DP1THi8FbPaKLfNGCjrgOhWj2MTo4WDtQ";
+        token = "Bearer " + "eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJpVmRPVXZvcVM2Q2ZKZUpCY2JXNElaNU1sbTJiLUI5RXhJakpsa21aSGZZIn0.eyJleHAiOjE2OTExNTE3MjEsImlhdCI6MTY5MTEzMzcyMSwianRpIjoiYzQ3NjZkNDgtODMwYy00Y2ViLWIzNTEtMTMxNzI3ZTcwMGYwIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL2F1dGgvcmVhbG1zL2NvbXBhbnktZGV2IiwiYXVkIjoiYWNjb3VudCIsInN1YiI6IjlhMDM1YjU5LTIxMGItNGY1Yi04ODJiLTUwMWUxNDNlNGU2YSIsInR5cCI6IkJlYXJlciIsImF6cCI6InRpY2tldGluZy1hcHAiLCJzZXNzaW9uX3N0YXRlIjoiMTFhMGRlYTEtOTNmNi00MmE0LTljM2UtNDliNWVlOGMzNzUzIiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjgwODEiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbImRlZmF1bHQtcm9sZXMtY29tcGFueS1kZXYiLCJvZmZsaW5lX2FjY2VzcyIsInVtYV9hdXRob3JpemF0aW9uIl19LCJyZXNvdXJjZV9hY2Nlc3MiOnsidGlja2V0aW5nLWFwcCI6eyJyb2xlcyI6WyJNYW5hZ2VyIl19LCJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBlbWFpbCBwcm9maWxlIiwic2lkIjoiMTFhMGRlYTEtOTNmNi00MmE0LTljM2UtNDliNWVlOGMzNzUzIiwiZW1haWxfdmVyaWZpZWQiOnRydWUsInByZWZlcnJlZF91c2VybmFtZSI6InNhbSJ9.K11HBJmFY3MbnjapDTQ2wZwgUQzwdpXFF2NNokonDl6ZY547IyWRYkQP3jDQU41fXd0_h8udUyyw21mWoshaGOicqUW4nll73Nz7Y7HgiLO8qrG5YR24Y-oaeYkzwS-ZHqq-XWwnkq15QiFQMMqJf6xHe7OqB4H3ORJNvpP3Aevg2nQMaq6tU6WlWyD-RZmHO_Ga4frSFALNQWxEOslNvKwGNWN0ctlHr-zV6tfVR3SX0H6Fr1pRJPC6kZro5AS6IEcy1C_y3aNbtEAPecp2MfOtRFp6S9IdwHplzrYFXzWaOZ_02bgXPYOcrWe6mrV36eWYmijlU7Ic2WLmIaqkHA";
         manager = new UserDTO(2L,
                 "",
                 "",
@@ -75,8 +76,47 @@ class ProjectControllerTest {
         mvc.perform(MockMvcRequestBuilders.get("/api/v1/project")
                         .header("Authorization", token)
                         .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data[0].projectCode").exists())
+                .andExpect(jsonPath("$.data[0].assignedManager.userName").exists())
+                .andExpect(jsonPath("$.data[0].assignedManager.userName").isNotEmpty())
+                .andExpect(jsonPath("$.data[0].assignedManager.userName").isString())
+                .andExpect(jsonPath("$.data[0].assignedManager.userName").value("tom"));
 
+    }
+
+    @Test
+    void givenToken_createProject() throws Exception {
+
+        mvc.perform(MockMvcRequestBuilders.post("/api/v1/project")
+                        .header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(toJsonString(project)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.message").value("project successfully created"));
+
+    }
+
+    @Test
+    void givenToken_updateProject() throws Exception {
+        project.setProjectName("API Project-2");
+        mvc.perform(MockMvcRequestBuilders.put("/api/v1/project")
+                        .header("Authorization", token)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .content(toJsonString(project)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("project successfully updated"));
+
+    }
+
+
+    private String toJsonString(final Object obj) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
+        objectMapper.registerModule(new JavaTimeModule());
+        return objectMapper.writeValueAsString(obj);
     }
 
 
