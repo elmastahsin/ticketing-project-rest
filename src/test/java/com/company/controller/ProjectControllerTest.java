@@ -111,6 +111,16 @@ class ProjectControllerTest {
 
     }
 
+    @Test
+    void givenToken_deleteProject() throws Exception {
+        mvc.perform(MockMvcRequestBuilders.delete("/api/v1/project/{projectCode}", "PR001")
+                        .header("Authorization", token)
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.message").value("project successfully deleted"));
+
+    }
+
 
     private String toJsonString(final Object obj) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
